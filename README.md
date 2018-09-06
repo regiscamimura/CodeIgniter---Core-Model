@@ -116,12 +116,14 @@ Add Batch Method
 ================
 
 This method is to perform a batch insert, and it works the same way as the save method, but the parameter accepted should be a multidimensional array, for example:
-
+```
 $data = [
 	['id'=>1, name'=>'John', 'date'=>'2018-09-01', 'status'=>'1', 'account_id'=>2],
 	['id'=>2, name'=>'Jack', 'date'=>'2018-09-01', 'status'=>'1', 'account_id'=>3]
 ]
+
 $this->user_model->save($data);
+```
 
 Delete Method
 =============
