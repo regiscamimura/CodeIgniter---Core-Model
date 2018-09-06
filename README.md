@@ -25,22 +25,22 @@ Will produce this query:
 
 The first parameter can also be an array. For example:
 
-$filter = array('name'=>'John', 'date >='=>'2014-10-10');
+$filter = array('name'=>'John', 'date >='=>'2018-09-01');
 $this->user_model->get($filter);
 
 Will product this query:
 
-"SELECT * FROM user WHERE name = 'John' AND `date` >= '2014-10-10' LIMIT 1";
+"SELECT * FROM user WHERE name = 'John' AND `date` >= '2018-09-01' LIMIT 1";
 
 If you need a more complex filter, you can use a "raw" filter, like that:
 
-$filter = array('date'=>'2014-10-10');
+$filter = array('date'=>'2018-09-01');
 $filter["(name LIKE 'John%' OR name LIKE '%Connor'"] = false;
 $this->user_model->get($filter);
 
 This will product this query:
 
-"SELECT * FROM user WHERE date = '2014-10-10' AND (name LIKE 'John%' OR name LIKE '%Connor')";
+"SELECT * FROM user WHERE date = '2018-09-01' AND (name LIKE 'John%' OR name LIKE '%Connor')";
 
 A second parameter can be used. If so, the query will retrieve only the field(s) you want. For example, if you want only one field, you can do that:
 
@@ -82,12 +82,12 @@ This method is to insert OR update records in the database. It takes 2 parameter
 
 The first parameter it must be an array of values. For example:
 
-$data = array('name'=>'John', 'date'=>'2014-10-10', 'status'=>'1');
+$data = array('name'=>'John', 'date'=>'2018-09-01', 'status'=>'1');
 $this->user_model->save($data);
 
 The produced query will be:
 
-"INSERT INTO user (name, date, status, created_by, created_at) VALUES ('John', '2014-10-10', '1', '$_SESSION['user_id']', date('Y-m-d H:i:s'))";
+"INSERT INTO user (name, date, status, created_by, created_at) VALUES ('John', '2018-09-01', '1', '$_SESSION['user_id']', date('Y-m-d H:i:s'))";
 
 Note that the fields "created_by" and "created_at" are automatically added. That requires your database to have those fields. That's because this class was created to fit in a specific database structure. It's easy to modify the class to not use those fields, but for logging purposes, its generally a good idea to have those.
 
@@ -95,21 +95,33 @@ Also, note it will try to use a session variable. That's usual for admin areas w
 
 If the $data array has an "id" key, then an updated will be fired instead. For example:
 
-$data = array('id'=>1, name'=>'John', 'date'=>'2014-10-10', 'status'=>'1');
+$data = array('id'=>1, name'=>'John', 'date'=>'2018-09-01', 'status'=>'1');
 $this->user_model->save($data);
 
 The produced query will be:
 
-"UPDATE user SET name = 'John', date = '2014-10-10', 'status' = '1', updated_by = '$_SESSION['user_id'], updated_at = 'date(Y-m-d H:i:s)' WHERE id = '1'";
+"UPDATE user SET name = 'John', date = '2018-09-01', 'status' = '1', updated_by = '$_SESSION['user_id'], updated_at = 'date(Y-m-d H:i:s)' WHERE id = '1'";
 
 If you want to update a record but using another field instead of id, you should use the second parameter. For example:
 
-$data = array('id'=>1, name'=>'John', 'date'=>'2014-10-10', 'status'=>'1', 'account_id'=>2);
+$data = array('id'=>1, name'=>'John', 'date'=>'2018-09-01', 'status'=>'1', 'account_id'=>2);
 $this->user_model->save($data, 'account_id');
 
 The produced query will be: 
 
-"UPDATE user SET id = 1, name = 'John', date = '2014-10-10', 'status' = '1', updated_by = '$_SESSION['user_id'], updated_at = 'date(Y-m-d H:i:s)' WHERE account_id = 2";
+"UPDATE user SET id = 1, name = 'John', date = '2018-09-01', 'status' = '1', updated_by = '$_SESSION['user_id'], updated_at = 'date(Y-m-d H:i:s)' WHERE account_id = 2";
+
+
+Add Batch Method
+================
+
+This method is to perform a batch insert, and it works the same way as the save method, but the parameter accepted should be a multidimensional array, for example:
+
+$data = [
+	['id'=>1, name'=>'John', 'date'=>'2018-09-01', 'status'=>'1', 'account_id'=>2],
+	['id'=>2, name'=>'Jack', 'date'=>'2018-09-01', 'status'=>'1', 'account_id'=>3]
+]
+$this->user_model->save($data);
 
 Delete Method
 =============
